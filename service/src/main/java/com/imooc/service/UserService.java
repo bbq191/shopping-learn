@@ -21,4 +21,13 @@ public interface UserService {
    * @return 注册后的用户脱敏信息
    */
   public Users createUser(UserBO userBO);
+
+  /**
+   * 检索用户名和密码是否匹配，用于登陆
+   *
+   * @param username 用户名
+   * @param password 密码
+   * @return 登陆成功后的用户对象，需要脱敏
+   */
+  public Users queryUserForLogin(String username, String password);
 }

@@ -52,8 +52,18 @@ public class UserServiceImpl implements UserService {
     user.setSex(Sex.secret.type);
     user.setCreatedTime(new Date());
     user.setUpdatedTime(new Date());
-
+    // 开始注册
     usersMapper.insert(user);
     return user;
+  }
+
+  @Transactional(propagation = Propagation.SUPPORTS)
+  @Override
+  public Users queryUserForLogin(String username, String password) {
+    Example userExample = new Example(Users.class);
+    Example.Criteria userCriteria = userExample.createCriteria();
+    userCriteria.andEqualTo("username", username);
+    userCriteria.andEqualTo("password", password);
+    return usersMapper.selectOneByExample(userExample);
   }
 }

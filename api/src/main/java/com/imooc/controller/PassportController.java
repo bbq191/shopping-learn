@@ -101,6 +101,17 @@ public class PassportController {
     return IMOOCJSONResult.ok(userResult);
   }
 
+  @ApiOperation(value = "用户退出", notes = "用户退出并清理 cookie", httpMethod = "POST")
+  @PostMapping("/logout")
+  public IMOOCJSONResult logout(
+      @RequestParam String userId, HttpServletRequest request, HttpServletResponse response) {
+    // 清楚用户 cookie
+    CookieUtils.deleteCookie(request, response, "user");
+    // todo 清空购物车
+    // todo 分布式会话中需要清除用户数据
+    return IMOOCJSONResult.ok();
+  }
+
   /**
    * 过滤敏感信息
    *

@@ -4,8 +4,11 @@ import com.imooc.mapper.CategoryMapper;
 import com.imooc.mapper.CategoryMapperCustom;
 import com.imooc.pojo.Category;
 import com.imooc.pojo.vo.CategoryVo;
+import com.imooc.pojo.vo.NewItemsVo;
 import com.imooc.service.CategoryService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,5 +36,13 @@ public class CategoryServiceImpl implements CategoryService {
   @Override
   public List<CategoryVo> getSubCatList(Integer rootCatId) {
     return categoryMapperCustom.getSubCatList(rootCatId);
+  }
+
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public List<NewItemsVo> getSixNewItemLazy(Integer rootCatId) {
+    Map<String, Object> map = new HashMap<>(6);
+    map.put("rootCatId", rootCatId);
+    return categoryMapperCustom.getSixNewItemLazy(map);
   }
 }

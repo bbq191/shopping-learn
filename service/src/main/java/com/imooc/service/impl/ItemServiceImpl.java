@@ -17,6 +17,7 @@ import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVo;
 import com.imooc.pojo.vo.ItemCommentVo;
 import com.imooc.service.ItemService;
+import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +99,10 @@ public class ItemServiceImpl implements ItemService {
     /*page：第几页 pageSize：每页条数*/
     PageHelper.startPage(page, pageSize);
     List<ItemCommentVo> list = itemsMapperCustom.queryItemComments(map);
+    /* 数据脱敏 */
+    for (ItemCommentVo vo : list) {
+      vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
+    }
     return setterPageGrid(list, page);
   }
 

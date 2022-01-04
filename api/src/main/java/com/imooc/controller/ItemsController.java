@@ -4,6 +4,7 @@ import com.imooc.pojo.Items;
 import com.imooc.pojo.ItemsImg;
 import com.imooc.pojo.ItemsParam;
 import com.imooc.pojo.ItemsSpec;
+import com.imooc.pojo.vo.CommentLevelCountsVo;
 import com.imooc.pojo.vo.ItemInfoVo;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /** @author afu */
@@ -45,5 +47,16 @@ public class ItemsController {
     itemInfoVo.setItemSpecList(specList);
     itemInfoVo.setItemParams(param);
     return IMOOCJSONResult.ok(itemInfoVo);
+  }
+
+  @ApiOperation(value = "查询商品评价数量", notes = "查询商品评价数量", httpMethod = "GET")
+  @GetMapping("/commentLevel")
+  public IMOOCJSONResult commentLevel(
+      @ApiParam(name = "itemId", value = "商品 id", required = true) @RequestParam String itemId) {
+    if (StringUtils.isBlank(itemId)) {
+      return IMOOCJSONResult.errorMsg("商品 id 不能为空");
+    }
+    CommentLevelCountsVo countsVo = itemService.queryCommentCounts(itemId);
+    return IMOOCJSONResult.ok(countsVo);
   }
 }

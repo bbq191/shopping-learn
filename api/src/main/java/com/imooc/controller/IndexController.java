@@ -15,6 +15,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /** @author afu */
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
     value = "首页",
     tags = {"首页展示的相关接口"})
 @RestController
+@RequestMapping("index")
 public class IndexController {
   @Autowired private CarouselService carouselService;
   @Autowired private CategoryService categoryService;

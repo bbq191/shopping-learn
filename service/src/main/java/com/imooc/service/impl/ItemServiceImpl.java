@@ -1,9 +1,12 @@
 package com.imooc.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.imooc.enums.CommentLevel;
 import com.imooc.mapper.ItemsCommentsMapper;
 import com.imooc.mapper.ItemsImgMapper;
 import com.imooc.mapper.ItemsMapper;
+import com.imooc.mapper.ItemsMapperCustom;
 import com.imooc.mapper.ItemsParamMapper;
 import com.imooc.mapper.ItemsSpecMapper;
 import com.imooc.pojo.Items;
@@ -12,8 +15,12 @@ import com.imooc.pojo.ItemsImg;
 import com.imooc.pojo.ItemsParam;
 import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVo;
+import com.imooc.pojo.vo.ItemCommentVo;
 import com.imooc.service.ItemService;
+import com.imooc.utils.PagedGridResult;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
   @Autowired private ItemsSpecMapper itemsSpecMapper;
   @Autowired private ItemsParamMapper itemsParamMapper;
   @Autowired private ItemsCommentsMapper itemsCommentsMapper;
+  @Autowired private ItemsMapperCustom itemsMapperCustom;
 
   @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
   @Override
@@ -80,6 +88,19 @@ public class ItemServiceImpl implements ItemService {
     return commentLevelCountVo;
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public PagedGridResult queryPagedComments(
+      String itemId, Integer level, Integer page, Integer pageSize) {
+    Map<String, Object> map = new HashMap<>(20);
+    map.put("itemId", itemId);
+    map.put("level", level);
+    /*page：第几页 pageSize：每页条数*/
+    PageHelper.startPage(page, pageSize);
+    List<ItemCommentVo> list = itemsMapperCustom.queryItemComments(map);
+    return setterPageGrid(list, page);
+  }
+
   /**
    * 分类获取评价数量
    *
@@ -95,5 +116,22 @@ public class ItemServiceImpl implements ItemService {
       condition.setCommentLevel(commentLevel);
     }
     return itemsCommentsMapper.selectCount(condition);
+  }
+
+  /**
+   * 分页列表查询
+   *
+   * @param list 对象列表
+   * @param page 第几页
+   * @return 分页后对象列表
+   */
+  private PagedGridResult setterPageGrid(List<?> list, Integer page) {
+    PageInfo<?> pageList = new PageInfo<>(list);
+    PagedGridResult grid = new PagedGridResult();
+    grid.setPage(page);
+    grid.setRows(list);
+    grid.setTotal(pageList.getPages());
+    grid.setRecords(pageList.getTotal());
+    return grid;
   }
 }

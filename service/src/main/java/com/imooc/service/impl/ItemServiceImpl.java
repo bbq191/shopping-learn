@@ -17,9 +17,13 @@ import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVo;
 import com.imooc.pojo.vo.ItemCommentVo;
 import com.imooc.pojo.vo.SearchItemsVo;
+import com.imooc.pojo.vo.ShopCartVo;
 import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +134,15 @@ public class ItemServiceImpl implements ItemService {
     return setterPageGrid(list, page);
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public List<ShopCartVo> queryItemsBySpecIds(String specIds) {
+    String[] ids = specIds.split(",");
+    List<String> specIdsList = new ArrayList<>();
+    Collections.addAll(specIdsList, ids);
+    return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
+  }
+
   /**
    * 分类获取评价数量
    *
@@ -137,7 +150,6 @@ public class ItemServiceImpl implements ItemService {
    * @param commentLevel 评价级别
    * @return 评价数量
    */
-  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
   private Integer getCommentsCounts(String itemId, Integer commentLevel) {
     ItemsComments condition = new ItemsComments();
     condition.setItemId(itemId);

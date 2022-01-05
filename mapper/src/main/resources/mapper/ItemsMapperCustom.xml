@@ -33,9 +33,15 @@
       <!--    k： 默认，代表默认排序根据name-->
       <!--    c：根据销量-->
       <!--    p：根据价格-->
-      <when test="paramsMap.sort == &quot;c&quot;">i.sell_counts desc</when>
-      <when test="paramsMap.sort == &quot;p&quot;">tempSpec.price_discount asc</when>
-      <otherwise>i.item_name asc</otherwise>
+      <when test="paramsMap.sort == &quot;c&quot;">
+        i.sell_counts desc
+      </when>
+      <when test="paramsMap.sort == &quot;p&quot;">
+        tempSpec.price_discount asc
+      </when>
+      <otherwise>
+        i.item_name asc
+      </otherwise>
     </choose>
   </select>
 
@@ -56,12 +62,42 @@
     WHERE ii.is_main = 1 and i.cat_id = #{paramsMap.catId}
     order by
     <choose>
-      <!--    k： 默认，代表默认排序根据name-->
+      <!--    k：默认，代表默认排序根据name-->
       <!--    c：根据销量-->
       <!--    p：根据价格-->
-      <when test="paramsMap.sort == &quot;c&quot;">i.sell_counts desc</when>
-      <when test="paramsMap.sort == &quot;p&quot;">tempSpec.price_discount asc</when>
-      <otherwise>i.item_name asc</otherwise>
+      <when test="paramsMap.sort == &quot;c&quot;">
+        i.sell_counts desc
+      </when>
+      <when test="paramsMap.sort == &quot;p&quot;">
+        tempSpec.price_discount asc
+      </when>
+      <otherwise>
+        i.item_name asc
+      </otherwise>
     </choose>
+  </select>
+
+  <select id="queryItemsBySpecIds" parameterType="List" resultType="com.imooc.pojo.vo.ShopCartVo">
+    SELECT t_items.id as itemId,
+    t_items.item_name as itemName,
+    t_items_img.url as itemImgUrl,
+    t_items_spec.id as specId,
+    t_items_spec.`name` as specName,
+    t_items_spec.price_discount as priceDiscount,
+    t_items_spec.price_normal as priceNormal
+    FROM items_spec t_items_spec
+    LEFT JOIN
+    items t_items
+    ON
+    t_items.id = t_items_spec.item_id
+    LEFT JOIN
+    items_img t_items_img
+    on
+    t_items_img.item_id = t_items.id
+    WHERE t_items_img.is_main = 1
+    AND t_items_spec.id IN
+    <foreach collection="paramsList" index="index" item="specId" open="(" separator="," close=")">
+      #{specId}
+    </foreach>
   </select>
 </mapper>

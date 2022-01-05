@@ -97,7 +97,8 @@ public class PassportController {
     setNullPropertirs(userResult);
     // 设置 cookie 值
     CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(userResult), true);
-    // 不重复，返回成功
+    // TODO: 1/5/22 生成用户 token，存入 redis
+    // TODO: 1/5/22 同步购物车数据
     return IMOOCJSONResult.ok(userResult);
   }
 
@@ -116,15 +117,13 @@ public class PassportController {
    * 过滤敏感信息
    *
    * @param userResult 用户结果集
-   * @return 用户空结果集
    */
-  private Users setNullPropertirs(Users userResult) {
+  private void setNullPropertirs(Users userResult) {
     userResult.setPassword(null);
     userResult.setMobile(null);
     userResult.setEmail(null);
     userResult.setBirthday(null);
     userResult.setUpdatedTime(null);
     userResult.setCreatedTime(null);
-    return userResult;
   }
 }

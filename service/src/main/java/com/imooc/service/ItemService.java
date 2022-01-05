@@ -59,4 +59,15 @@ public interface ItemService {
    * @return 评价详情列表
    */
   PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+  /**
+   * 搜索商品列表
+   *
+   * @param keywords 搜索关键字
+   * @param sort 排序规则
+   * @param page 显示页
+   * @param pageSize 每页数量
+   * @return 商品分页列表
+   */
+  PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize);
 }

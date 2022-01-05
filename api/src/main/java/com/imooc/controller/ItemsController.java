@@ -81,12 +81,12 @@ public class ItemsController extends BaseController {
     return IMOOCJSONResult.ok(gridResult);
   }
 
-  @ApiOperation(value = "搜索商品列表", notes = "查询商品评价", httpMethod = "GET")
+  @ApiOperation(value = "搜索商品列表", notes = "搜索商品列表", httpMethod = "GET")
   @GetMapping("/search")
   public IMOOCJSONResult search(
       @ApiParam(name = "keywords", value = "商品名称关键字", required = true) @RequestParam
           String keywords,
-      @ApiParam(name = "sort", value = "排序类型", required = true) @RequestParam String sort,
+      @ApiParam(name = "sort", value = "排序类型") @RequestParam String sort,
       @ApiParam(name = "page", value = "查询第几页") @RequestParam Integer page,
       @ApiParam(name = "pageSize", value = "分页的每一页数量") @RequestParam Integer pageSize) {
     if (StringUtils.isBlank(keywords)) {
@@ -99,6 +99,26 @@ public class ItemsController extends BaseController {
       pageSize = PAGE_SIZE;
     }
     PagedGridResult gridResult = itemService.searchItems(keywords, sort, page, pageSize);
+    return IMOOCJSONResult.ok(gridResult);
+  }
+
+  @ApiOperation(value = "分类搜索商品列表", notes = "分类搜索商品列表", httpMethod = "GET")
+  @GetMapping("/catItems")
+  public IMOOCJSONResult catItems(
+      @ApiParam(name = "catId", value = "三级分类 id", required = true) @RequestParam String catId,
+      @ApiParam(name = "sort", value = "排序类型") @RequestParam String sort,
+      @ApiParam(name = "page", value = "查询第几页") @RequestParam Integer page,
+      @ApiParam(name = "pageSize", value = "分页的每一页数量") @RequestParam Integer pageSize) {
+    if (StringUtils.isBlank(catId)) {
+      return IMOOCJSONResult.errorMsg("分类 id 不能为空");
+    }
+    if (page == null) {
+      page = 1;
+    }
+    if (pageSize == null) {
+      pageSize = PAGE_SIZE;
+    }
+    PagedGridResult gridResult = itemService.searchItemsByThirdCat(catId, sort, page, pageSize);
     return IMOOCJSONResult.ok(gridResult);
   }
 }

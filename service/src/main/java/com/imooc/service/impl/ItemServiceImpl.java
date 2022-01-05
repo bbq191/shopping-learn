@@ -118,6 +118,18 @@ public class ItemServiceImpl implements ItemService {
     return setterPageGrid(list, page);
   }
 
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public PagedGridResult searchItemsByThirdCat(
+      String catId, String sort, Integer page, Integer pageSize) {
+    Map<String, Object> map = new HashMap<>(20);
+    map.put("catId", catId);
+    map.put("sort", sort);
+    PageHelper.startPage(page, pageSize);
+    List<SearchItemsVo> list = itemsMapperCustom.searchItemsByThirdCat(map);
+    return setterPageGrid(list, page);
+  }
+
   /**
    * 分类获取评价数量
    *

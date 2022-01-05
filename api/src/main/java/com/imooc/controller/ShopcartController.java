@@ -36,4 +36,19 @@ public class ShopcartController {
     // todo 前端用户在登陆到情况下添加商品到购物车会同步添加到 redis
     return IMOOCJSONResult.ok();
   }
+
+  @ApiOperation(value = "从购物车删除商品", notes = "从购物车删除商品", httpMethod = "POST")
+  @PostMapping("/del")
+  public IMOOCJSONResult del(
+      @ApiParam(name = "userId", value = "用户 id", required = true) @RequestParam String userId,
+      @ApiParam(name = "itemSpecId", value = "商品规格 id", required = true) @RequestParam
+          String itemSpecId,
+      HttpServletRequest request,
+      HttpServletResponse response) {
+    if (StringUtils.isBlank(userId) || StringUtils.isBlank(itemSpecId)) {
+      return IMOOCJSONResult.errorMsg("参数为空");
+    }
+    // todo 用户删除页面购物车中商品，用户在登陆到情况下会删除购物车中商品并会同步删除 redis 信息
+    return IMOOCJSONResult.ok();
+  }
 }

@@ -3,6 +3,7 @@ package com.imooc.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.enums.CommentLevel;
+import com.imooc.enums.YesOrNo;
 import com.imooc.mapper.ItemsCommentsMapper;
 import com.imooc.mapper.ItemsImgMapper;
 import com.imooc.mapper.ItemsMapper;
@@ -22,7 +23,6 @@ import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -141,6 +141,48 @@ public class ItemServiceImpl implements ItemService {
     List<String> specIdsList = new ArrayList<>();
     Collections.addAll(specIdsList, ids);
     return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
+  }
+
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public ItemsSpec queryItemSpecById(String specId) {
+    return itemsSpecMapper.selectByPrimaryKey(specId);
+  }
+
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public String queryItemMainImgById(String itemId) {
+    ItemsImg itemsImg = new ItemsImg();
+    itemsImg.setItemId(itemId);
+    itemsImg.setIsMain(YesOrNo.YES.type);
+    ItemsImg result = itemsImgMapper.selectOne(itemsImg);
+    return result != null ? result.getUrl() : "";
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  @Override
+  public void decreaseItemSpecStock(String itemSpecId, int buyCounts) {
+    // synchronized 不推荐使用，集群下无用，性能低下
+    // 锁数据库: 不推荐，导致数据库性能低下
+    // 分布式锁 zookeeper redis
+
+    // lockUtil.getLock(); -- 加锁
+
+    // 1. 查询库存
+    //        int stock = 10;
+
+    // 2. 判断库存，是否能够减少到0以下
+    //        if (stock - buyCounts < 0) {
+    // 提示用户库存不够
+    //            10 - 3 -3 - 5 = -1
+    //        }
+
+    // lockUtil.unLock(); -- 解锁
+
+    int result = itemsMapperCustom.decreaseItemSpecStock(itemSpecId, buyCounts);
+    if (result != 1) {
+      throw new RuntimeException("订单创建失败，原因：库存不足!");
+    }
   }
 
   /**

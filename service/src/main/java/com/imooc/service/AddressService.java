@@ -44,4 +44,13 @@ public interface AddressService {
    * @param userId 用户 id
    */
   void updateUserAddressToDefualt(String addressId, String userId);
+
+  /**
+   * 根据地址及用户 id 获取地址信息
+   *
+   * @param addressId 地址 id
+   * @param userId 用户 id
+   * @return 地址信息
+   */
+  UserAddress queryUserAddres(String addressId, String userId);
 }

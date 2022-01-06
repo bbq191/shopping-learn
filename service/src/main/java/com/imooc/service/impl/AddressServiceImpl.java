@@ -49,6 +49,7 @@ public class AddressServiceImpl implements AddressService {
     userAddressMapper.insert(newAddress);
   }
 
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   @Override
   public void updateUserAddress(AddressBo addressBo) {
     String addressId = addressBo.getAddressId();
@@ -57,5 +58,14 @@ public class AddressServiceImpl implements AddressService {
     pendingAddress.setId(addressId);
     pendingAddress.setUpdatedTime(new Date());
     userAddressMapper.updateByPrimaryKeySelective(pendingAddress);
+  }
+
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  @Override
+  public void deleteUserAddress(String addressId, String userId) {
+    UserAddress userAddress = new UserAddress();
+    userAddress.setUserId(userId);
+    userAddress.setId(addressId);
+    userAddressMapper.delete(userAddress);
   }
 }

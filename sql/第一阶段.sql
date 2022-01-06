@@ -31,3 +31,5 @@ FROM items_spec t_items_spec
 WHERE t_items_img.is_main = 1
   AND t_items_spec.id IN ('1', '3', '5');
 
+select *
+from user_address;

@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +59,17 @@ public class AddressController {
     addressService.updateUserAddress(addressBo);
     return IMOOCJSONResult.ok();
   }
+
+  @ApiOperation(value = "用户地址删除", notes = "用户地址删除", httpMethod = "POST")
+  @PostMapping("/delete")
+  public IMOOCJSONResult delete(@RequestParam String addressId, @RequestParam String userId) {
+    if (StringUtils.isBlank(addressId) || StringUtils.isBlank(userId)) {
+      return IMOOCJSONResult.errorMsg("参数不能为空");
+    }
+    addressService.deleteUserAddress(addressId, userId);
+    return IMOOCJSONResult.ok();
+  }
+
   /**
    * 验证用户地址数据
    *

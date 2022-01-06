@@ -22,4 +22,10 @@ public interface AddressService {
    * @param addressBo 地址业务参数
    */
   void addNewUserAddress(AddressBo addressBo);
+
+  /**
+   * 修改用户地址
+   * @param addressBo 地址业务参数
+   */
+  void updateUserAddress(AddressBo addressBo);
 }

@@ -47,6 +47,19 @@ public class AddressController {
     return IMOOCJSONResult.ok();
   }
 
+  @ApiOperation(value = "用户修改地址", notes = "用户修改地址", httpMethod = "POST")
+  @PostMapping("/update")
+  public IMOOCJSONResult update(@RequestBody AddressBo addressBo) {
+    if (StringUtils.isBlank(addressBo.getAddressId())) {
+      return IMOOCJSONResult.errorMsg("地址 id 不能为空");
+    }
+    IMOOCJSONResult checkRes = checkAddress(addressBo);
+    if (checkRes.getStatus() != 200) {
+      return checkRes;
+    }
+    addressService.updateUserAddress(addressBo);
+    return IMOOCJSONResult.ok();
+  }
   /**
    * 验证用户地址数据
    *

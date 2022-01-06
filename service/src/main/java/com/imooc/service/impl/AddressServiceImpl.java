@@ -48,4 +48,14 @@ public class AddressServiceImpl implements AddressService {
     newAddress.setUpdatedTime(new Date());
     userAddressMapper.insert(newAddress);
   }
+
+  @Override
+  public void updateUserAddress(AddressBo addressBo) {
+    String addressId = addressBo.getAddressId();
+    UserAddress pendingAddress = new UserAddress();
+    BeanUtils.copyProperties(addressBo, pendingAddress);
+    pendingAddress.setId(addressId);
+    pendingAddress.setUpdatedTime(new Date());
+    userAddressMapper.updateByPrimaryKeySelective(pendingAddress);
+  }
 }

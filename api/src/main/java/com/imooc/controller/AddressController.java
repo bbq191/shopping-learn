@@ -70,6 +70,15 @@ public class AddressController {
     return IMOOCJSONResult.ok();
   }
 
+  @ApiOperation(value = "用户设置默认地址", notes = "用户设置默认地址", httpMethod = "POST")
+  @PostMapping("/setDefalut")
+  public IMOOCJSONResult setDefalut(@RequestParam String addressId, @RequestParam String userId) {
+    if (StringUtils.isBlank(addressId) || StringUtils.isBlank(userId)) {
+      return IMOOCJSONResult.errorMsg("参数不能为空");
+    }
+    addressService.updateUserAddressToDefualt(addressId, userId);
+    return IMOOCJSONResult.ok();
+  }
   /**
    * 验证用户地址数据
    *

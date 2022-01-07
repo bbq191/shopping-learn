@@ -12,6 +12,7 @@ import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.Orders;
 import com.imooc.pojo.UserAddress;
 import com.imooc.pojo.bo.SubmitOrderBo;
+import com.imooc.pojo.vo.MerchantOrdersVo;
 import com.imooc.pojo.vo.OrderVo;
 import com.imooc.service.AddressService;
 import com.imooc.service.ItemService;
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
   @Autowired private Sid sid;
 
-  @Transactional(propagation = Propagation.REQUIRED)
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   @Override
   public OrderVo createOrder(SubmitOrderBo submitOrderBo) {
 
@@ -49,7 +50,7 @@ public class OrderServiceImpl implements OrderService {
     Integer payMethod = submitOrderBo.getPayMethod();
     String leftMsg = submitOrderBo.getLeftMsg();
     // 包邮费用设置为0
-    Integer postAmount = 0;
+    int postAmount = 0;
     String orderId = sid.nextShort();
     UserAddress address = addressService.queryUserAddres(addressId, userId);
     // 1. 新订单数据保存
@@ -66,8 +67,6 @@ public class OrderServiceImpl implements OrderService {
             + address.getDistrict()
             + " "
             + address.getDetail());
-    //        newOrder.setTotalAmount();
-    //        newOrder.setRealPayAmount();
     newOrder.setPostAmount(postAmount);
     newOrder.setPayMethod(payMethod);
     newOrder.setLeftMsg(leftMsg);
@@ -125,31 +124,31 @@ public class OrderServiceImpl implements OrderService {
     orderStatusMapper.insert(waitPayOrderStatus);
 
     // 4. 构建商户订单，用于传给支付中心
-    //    MerchantOrdersVO merchantOrdersVO = new MerchantOrdersVO();
-    //    merchantOrdersVO.setMerchantOrderId(orderId);
-    //    merchantOrdersVO.setMerchantUserId(userId);
-    //    merchantOrdersVO.setAmount(realPayAmount + postAmount);
-    //    merchantOrdersVO.setPayMethod(payMethod);
+    MerchantOrdersVo merchantOrdersVo = new MerchantOrdersVo();
+    merchantOrdersVo.setMerchantOrderId(orderId);
+    merchantOrdersVo.setMerchantUserId(userId);
+    merchantOrdersVo.setAmount(realPayAmount + postAmount);
+    merchantOrdersVo.setPayMethod(payMethod);
 
     // 5. 构建自定义订单vo
-    //    OrderVO orderVO = new OrderVO();
-    //    orderVO.setOrderId(orderId);
-    //    orderVO.setMerchantOrdersVO(merchantOrdersVO);
+    OrderVo orderVo = new OrderVo();
+    orderVo.setOrderId(orderId);
+    orderVo.setMerchantOrdersVo(merchantOrdersVo);
 
-    return null;
+    return orderVo;
   }
 
-  //  @Transactional(propagation = Propagation.REQUIRED)
-  //  @Override
-  //  public void updateOrderStatus(String orderId, Integer orderStatus) {
-  //
-  //    OrderStatus paidStatus = new OrderStatus();
-  //    paidStatus.setOrderId(orderId);
-  //    paidStatus.setOrderStatus(orderStatus);
-  //    paidStatus.setPayTime(new Date());
-  //
-  //    orderStatusMapper.updateByPrimaryKeySelective(paidStatus);
-  //  }
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  @Override
+  public void updateOrderStatus(String orderId, Integer orderStatus) {
+
+    OrderStatus paidStatus = new OrderStatus();
+    paidStatus.setOrderId(orderId);
+    paidStatus.setOrderStatus(orderStatus);
+    paidStatus.setPayTime(new Date());
+
+    orderStatusMapper.updateByPrimaryKeySelective(paidStatus);
+  }
   //
   //  @Transactional(propagation = Propagation.SUPPORTS)
   //  @Override

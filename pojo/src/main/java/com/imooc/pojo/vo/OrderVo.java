@@ -3,22 +3,22 @@ package com.imooc.pojo.vo;
 /** @author afu */
 public class OrderVo {
 
-  //    private String orderId;
-  //    private MerchantOrdersVO merchantOrdersVO;
-  //
-  //    public String getOrderId() {
-  //        return orderId;
-  //    }
-  //
-  //    public void setOrderId(String orderId) {
-  //        this.orderId = orderId;
-  //    }
-  //
-  //    public MerchantOrdersVO getMerchantOrdersVO() {
-  //        return merchantOrdersVO;
-  //    }
-  //
-  //    public void setMerchantOrdersVO(MerchantOrdersVO merchantOrdersVO) {
-  //        this.merchantOrdersVO = merchantOrdersVO;
-  //    }
+  private String orderId;
+  private MerchantOrdersVo merchantOrdersVo;
+
+  public String getOrderId() {
+    return orderId;
+  }
+
+  public MerchantOrdersVo getMerchantOrdersVo() {
+    return merchantOrdersVo;
+  }
+
+  public void setMerchantOrdersVo(MerchantOrdersVo merchantOrdersVo) {
+    this.merchantOrdersVo = merchantOrdersVo;
+  }
+
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
 }

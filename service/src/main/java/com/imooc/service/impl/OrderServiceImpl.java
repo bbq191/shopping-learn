@@ -149,13 +149,13 @@ public class OrderServiceImpl implements OrderService {
 
     orderStatusMapper.updateByPrimaryKeySelective(paidStatus);
   }
-  //
-  //  @Transactional(propagation = Propagation.SUPPORTS)
-  //  @Override
-  //  public OrderStatus queryOrderStatusInfo(String orderId) {
-  //    return orderStatusMapper.selectByPrimaryKey(orderId);
-  //  }
-  //
+
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public OrderStatus queryOrderStatusInfo(String orderId) {
+    return orderStatusMapper.selectByPrimaryKey(orderId);
+  }
+
   //  @Transactional(propagation = Propagation.REQUIRED)
   //  @Override
   //  public void closeOrder() {
@@ -175,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
   //      }
   //    }
   //  }
-  //
+
   //  @Transactional(propagation = Propagation.REQUIRED)
   //  void doCloseOrder(String orderId) {
   //    OrderStatus close = new OrderStatus();

@@ -1,5 +1,6 @@
 package com.imooc.service.center;
 
+import com.imooc.pojo.Orders;
 import com.imooc.utils.PagedGridResult;
 
 /** @author afu */
@@ -26,11 +27,11 @@ public interface MyOrdersService {
   /**
    * 查询我的订单
    *
-   * @param userId
-   * @param orderId
-   * @return
+   * @param userId 用户 id
+   * @param orderId 订单 id
+   * @return 用户关联订单
    */
-  //  Orders queryMyOrder(String userId, String orderId);
+  Orders queryMyOrder(String userId, String orderId);
 
   /**
    * 更新订单状态 —> 确认收货
@@ -43,11 +44,11 @@ public interface MyOrdersService {
   /**
    * 删除订单（逻辑删除）
    *
-   * @param userId
-   * @param orderId
-   * @return
+   * @param userId 用户 id
+   * @param orderId 订单id
+   * @return 成功失败
    */
-  //  boolean deleteOrder(String userId, String orderId);
+  boolean deleteOrder(String userId, String orderId);
 
   /**
    * 查询用户订单数

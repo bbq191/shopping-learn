@@ -1,7 +1,6 @@
 package com.imooc.controller.center;
 
 import com.imooc.controller.BaseController;
-import com.imooc.pojo.Orders;
 import com.imooc.service.center.MyOrdersService;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.PagedGridResult;
@@ -140,17 +139,4 @@ public class MyOrdersController extends BaseController {
   //
   //        return IMOOCJSONResult.ok(grid);
   //    }
-
-  /**
-   * 用于验证用户和订单是否有关联关系，避免非法用户调用
-   *
-   * @return 检查结果
-   */
-  private IMOOCJSONResult checkUserOrder(String userId, String orderId) {
-    Orders order = myOrdersService.queryMyOrder(userId, orderId);
-    if (order == null) {
-      return IMOOCJSONResult.errorMsg("订单不存在！");
-    }
-    return IMOOCJSONResult.ok();
-  }
 }

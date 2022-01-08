@@ -3,6 +3,7 @@ package com.imooc.controller.center;
 import com.imooc.controller.BaseController;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBo;
+import com.imooc.resource.FileUpload;
 import com.imooc.service.center.CenterUserService;
 import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
@@ -40,6 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("userInfo")
 public class CenterUserController extends BaseController {
   @Autowired private CenterUserService centerUserService;
+  @Autowired private FileUpload fileUpload;
 
   @ApiOperation(value = "修改用户信息", notes = "修改用户信息", httpMethod = "POST")
   @PostMapping("update")
@@ -70,8 +72,8 @@ public class CenterUserController extends BaseController {
       HttpServletRequest request,
       HttpServletResponse response) {
     // 定义头像保存的地址
-    String fileSpace = IMAGE_USER_FACE_LOCATION;
-    //    String fileSpace = fileUpload.getImageUserFaceLocation();
+    //    String fileSpace = IMAGE_USER_FACE_LOCATION;
+    String fileSpace = fileUpload.getImageUserFaceLocation();
     // 在路径上为每一个用户增加一个userid，用于区分不同用户上传
     String uploadPathPrefix = File.separator + userId;
 
@@ -108,7 +110,7 @@ public class CenterUserController extends BaseController {
           File outFile = new File(finalFacePath);
           if (outFile.getParentFile() != null) {
             // 创建文件夹
-            outFile.getParentFile().mkdirs();
+            boolean wasSuccessful = outFile.getParentFile().mkdirs();
           }
 
           // 文件输出保存到目录

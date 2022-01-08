@@ -16,8 +16,12 @@ public interface MyOrdersService {
    */
   PagedGridResult queryMyOrders(String userId, Integer orderStatus, Integer page, Integer pageSize);
 
-  /** @Description: 订单状态 --> 商家发货 */
-  //  void updateDeliverOrderStatus(String orderId);
+  /**
+   * 订单状态 --> 商家发货
+   *
+   * @param orderId 订单id
+   */
+  void updateDeliverOrderStatus(String orderId);
 
   /**
    * 查询我的订单
@@ -31,9 +35,10 @@ public interface MyOrdersService {
   /**
    * 更新订单状态 —> 确认收货
    *
-   * @return
+   * @param orderId 订单id
+   * @return 成功失败
    */
-  //  boolean updateReceiveOrderStatus(String orderId);
+  boolean updateReceiveOrderStatus(String orderId);
 
   /**
    * 删除订单（逻辑删除）

@@ -1,6 +1,7 @@
 package com.imooc.controller.center;
 
 import com.imooc.controller.BaseController;
+import com.imooc.pojo.vo.OrderStatusCountsVo;
 import com.imooc.service.center.MyOrdersService;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.PagedGridResult;
@@ -113,6 +114,16 @@ public class MyOrdersController extends BaseController {
     return IMOOCJSONResult.ok();
   }
 
+  @ApiOperation(value = "获得订单状态数概况", notes = "获得订单状态数概况", httpMethod = "POST")
+  @PostMapping("/statusCounts")
+  public IMOOCJSONResult statusCounts(
+      @ApiParam(name = "userId", value = "用户id", required = true) @RequestParam String userId) {
+    if (StringUtils.isBlank(userId)) {
+      return IMOOCJSONResult.errorMsg(null);
+    }
+    OrderStatusCountsVo result = myOrdersService.getOrderStatusCounts(userId);
+    return IMOOCJSONResult.ok(result);
+  }
   //    @ApiOperation(value = "查询订单动向", notes = "查询订单动向", httpMethod = "POST")
   //    @PostMapping("/trend")
   //    public IMOOCJSONResult trend(

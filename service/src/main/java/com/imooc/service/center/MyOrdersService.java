@@ -1,6 +1,7 @@
 package com.imooc.service.center;
 
 import com.imooc.pojo.Orders;
+import com.imooc.pojo.vo.OrderStatusCountsVo;
 import com.imooc.utils.PagedGridResult;
 
 /** @author afu */
@@ -53,9 +54,10 @@ public interface MyOrdersService {
   /**
    * 查询用户订单数
    *
-   * @param userId
+   * @param userId 用户id
+   * @return 分状态订单数量
    */
-  //  OrderStatusCountsVO getOrderStatusCounts(String userId);
+  OrderStatusCountsVo getOrderStatusCounts(String userId);
 
   /**
    * 获得分页的订单动向

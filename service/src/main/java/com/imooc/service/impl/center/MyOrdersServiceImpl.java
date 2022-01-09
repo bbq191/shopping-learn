@@ -9,6 +9,7 @@ import com.imooc.mapper.OrdersMapperCustom;
 import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.Orders;
 import com.imooc.pojo.vo.MyOrdersVo;
+import com.imooc.pojo.vo.OrderStatusCountsVo;
 import com.imooc.service.center.BaseService;
 import com.imooc.service.center.MyOrdersService;
 import com.imooc.utils.PagedGridResult;
@@ -102,5 +103,28 @@ public class MyOrdersServiceImpl extends BaseService implements MyOrdersService 
     int result = ordersMapper.updateByExampleSelective(updateOrder, example);
 
     return result == 1;
+  }
+
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public OrderStatusCountsVo getOrderStatusCounts(String userId) {
+    Map<String, Object> map = new HashMap<>(5);
+    map.put("userId", userId);
+
+    map.put("orderStatus", OrderStatusEnum.WAIT_PAY.type);
+    int waitPayCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+    map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER.type);
+    int waitDeliverCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+    map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE.type);
+    int waitReceiveCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+    map.put("orderStatus", OrderStatusEnum.SUCCESS.type);
+    map.put("isComment", YesOrNo.NO.type);
+    int waitCommentCounts = ordersMapperCustom.getMyOrderStatusCounts(map);
+
+    return new OrderStatusCountsVo(
+        waitPayCounts, waitDeliverCounts, waitReceiveCounts, waitCommentCounts);
   }
 }

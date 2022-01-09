@@ -1,6 +1,7 @@
 package com.imooc.service.center;
 
 import com.imooc.pojo.OrderItems;
+import com.imooc.pojo.bo.center.OrderItemsCommentBo;
 import java.util.List;
 
 /** @author afu */
@@ -19,9 +20,9 @@ public interface MyCommentsService {
    *
    * @param orderId 订单编号
    * @param userId 用户编号
-   * @param commentList
+   * @param commentList 前端传入评论列表
    */
-  //    void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
+  void saveComments(String orderId, String userId, List<OrderItemsCommentBo> commentList);
 
   /**
    * 我的评价查询 分页

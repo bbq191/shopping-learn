@@ -4,7 +4,6 @@ import java.util.Date;
 
 /** @author afu */
 public class MyCommentVo {
-
   private String commentId;
   private String content;
   private Date createdTime;

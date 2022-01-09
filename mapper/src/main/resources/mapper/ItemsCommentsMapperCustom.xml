@@ -35,7 +35,7 @@
     <result column="createdTime" property="createdTime"/>
     <result column="itemId" property="itemId"/>
     <result column="itemName" property="itemName"/>
-    <result column="sepcName" property="specName"/>
+    <result column="specName" property="specName"/>
     <result column="itemImg" property="itemImg"/>
   </resultMap>
 
@@ -46,7 +46,7 @@
     ic.created_time as createdTime,
     ic.item_id as itemId,
     ic.item_name as itemName,
-    ic.sepc_name as sepcName,
+    ic.sepc_name as specName,
     ii.url as itemImg
     FROM
     items_comments ic

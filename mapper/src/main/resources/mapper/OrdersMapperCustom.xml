@@ -90,20 +90,10 @@
     os.success_time as successTime,
     os.close_time as closeTime,
     os.comment_time as commentTime
-    FROM
-    orders o
-    LEFT JOIN
-    order_status os
-    on
-    o.id = os.order_id
+    FROM orders o
+    LEFT JOIN order_status os on o.id = os.order_id
     WHERE
-    o.is_delete = 0
-    AND
-    o.user_id = #{paramsMap.userId}
-    AND
-    os.order_status in (20, 30, 40)
-    ORDER BY
-    os.order_id
-    DESC
+    o.is_delete = 0 AND o.user_id = #{paramsMap.userId} AND os.order_status in (20, 30, 40)
+    ORDER BY os.order_id DESC
   </select>
 </mapper>

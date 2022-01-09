@@ -62,10 +62,10 @@ public interface MyOrdersService {
   /**
    * 获得分页的订单动向
    *
-   * @param userId
-   * @param page
-   * @param pageSize
-   * @return
+   * @param userId 用户id
+   * @param page 分页
+   * @param pageSize 每页数量
+   * @return 订单动向分页列表
    */
-  //  PagedGridResult getOrdersTrend(String userId, Integer page, Integer pageSize);
+  PagedGridResult getOrdersTrend(String userId, Integer page, Integer pageSize);
 }

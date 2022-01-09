@@ -1,5 +1,6 @@
 package com.imooc.mapper;
 
+import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.vo.MyOrdersVo;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,11 @@ public interface OrdersMapperCustom {
    */
   int getMyOrderStatusCounts(@Param("paramsMap") Map<String, Object> map);
 
-  //    public List<OrderStatus> getMyOrderTrend(@Param("paramsMap") Map<String, Object> map);
-
+  /**
+   * 订单动向
+   *
+   * @param map 参数列表
+   * @return 订单动向列表
+   */
+  List<OrderStatus> getMyOrderTrend(@Param("paramsMap") Map<String, Object> map);
 }

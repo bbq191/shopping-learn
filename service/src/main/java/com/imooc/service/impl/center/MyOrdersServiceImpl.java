@@ -26,7 +26,6 @@ import tk.mybatis.mapper.entity.Example;
 /** @author afu */
 @Service
 public class MyOrdersServiceImpl extends BaseService implements MyOrdersService {
-
   @Autowired private OrdersMapperCustom ordersMapperCustom;
   @Autowired private OrderStatusMapper orderStatusMapper;
   @Autowired private OrdersMapper ordersMapper;
@@ -126,5 +125,17 @@ public class MyOrdersServiceImpl extends BaseService implements MyOrdersService 
 
     return new OrderStatusCountsVo(
         waitPayCounts, waitDeliverCounts, waitReceiveCounts, waitCommentCounts);
+  }
+
+  @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+  @Override
+  public PagedGridResult getOrdersTrend(String userId, Integer page, Integer pageSize) {
+    Map<String, Object> map = new HashMap<>(10);
+    map.put("userId", userId);
+
+    PageHelper.startPage(page, pageSize);
+    List<OrderStatus> list = ordersMapperCustom.getMyOrderTrend(map);
+
+    return setterPageGrid(list, page);
   }
 }

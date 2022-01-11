@@ -70,6 +70,11 @@
       <artifactId>pagehelper-spring-boot-starter</artifactId>
       <version>1.4.1</version>
     </dependency>
+    <!-- 引入 redis -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
     <!-- apache 工具类 -->
     <dependency>
       <groupId>commons-codec</groupId>

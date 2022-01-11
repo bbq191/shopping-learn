@@ -21,11 +21,15 @@ spring:
     # 单机实例
     database: 0
     host: localhost
+    password:
     port: 6379
     # 哨兵模式
-  #    sentinel:
-  #      master: master
-  #      nodes: localhost:26379
+    #    sentinel:
+    #      master: master
+    #      nodes: localhost:26379
+    # 集群模式
+  #    cluster:
+  #      nodes: localhost:6379,localhost:6379
   servlet:
     multipart:
       max-file-size: 512000     # 文件上传大小限制为500kb
